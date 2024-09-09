@@ -1,7 +1,7 @@
 provider "google" {
   project     = "My First Project"
   region      = "us-central1"
-  credentials = "smart-radio-435114-m1-e70024a1f690.json"
+  credentials = file("smart-radio-435114-m1-e70024a1f690.json")
 }
 
 resource "google_cloud_run_v2_service" "default" {
