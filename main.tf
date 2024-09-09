@@ -1,5 +1,5 @@
 provider "google" {
-  project     = "My First Project"
+  project     = "smart-radio-435114-m1"
   region      = "us-central1"
   credentials = file("smart-radio-435114-m1-e70024a1f690.json")
 }
