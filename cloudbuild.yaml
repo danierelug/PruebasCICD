@@ -22,7 +22,7 @@ steps:
     args:
       - cp
       - tfplan.json
-      - gs://corp-dev-infra-test-db-bucket-state/executions/plan/tfplan-${BUILD_ID}.json
+      - gs://bucket-states123/tfplan-${BUILD_ID}.json
 
   # Step 5: Apply Terraform changes (conditionally, you can control this with a flag or branch check)
   - name: 'hashicorp/terraform:latest'
