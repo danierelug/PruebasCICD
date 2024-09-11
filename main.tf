@@ -1,7 +1,7 @@
 provider "google" {
     project     = "smart-radio-435114-m1"
     region      = "us-central1"
-  }
+}
 
 resource "google_cloud_run_v2_service" "default" {
   name     = "PruebaCR"
