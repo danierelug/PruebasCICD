@@ -1,0 +1,42 @@
+
+  steps:
+  # Step 1: Configure Google Cloud SDK (implicit in Cloud Build)
+  # No need for this step explicitly as Cloud Build runs within GCP environment
+
+  # Step 2: Initialize Terraform
+  - name: 'hashicorp/terraform:latest'
+    args: ['init']
+
+  # Step 3: Plan Terraform changes
+  - name: 'hashicorp/terraform:latest'
+    id: plan
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform plan -out=tfplan -lock=false
+        terraform show -json tfplan > tfplan.json
+
+  # Step 4: Upload the Terraform plan to Google Cloud Storage
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gsutil
+    args:
+      - cp
+      - tfplan.json
+      - gs://bucket-states123/tfplan-file(cambiar).json
+  # Step 5: Apply Terraform changes (conditionally, you can control this with a flag or branch check)
+  - name: 'hashicorp/terraform:latest'
+    id: apply
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        if [ "$BRANCH_NAME" = "main" ]; then
+          terraform apply -auto-approve tfplan
+        else
+          echo "Skipping apply on non-main branch"
+        fi
+
+
+options:
+  logging: CLOUD_LOGGING_ONLY
